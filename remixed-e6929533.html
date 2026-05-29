@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parvesh Bhatia — eCommerce & Brand Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070706;--bg2:#0D0C0A;--bg3:#151410;
+  --ink:#EDE8DC;--ink2:#A89F8C;--ink3:#5A5448;
+  --gold:#C9A84C;--gold2:#E8D5A3;
+  --line:rgba(201,168,76,.13);--line2:rgba(237,232,220,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.025 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");pointer-events:none;z-index:9999;mix-blend-mode:screen;opacity:.5;}
+
+/* CURSOR */
+.cur{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);}
+.cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(201,168,76,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s ease,top .1s ease;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;padding:0 72px;display:flex;justify-content:space-between;align-items:center;background:rgba(7,7,6,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--line);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:5px;text-transform:uppercase;color:var(--ink);text-decoration:none;}
+.nav-mid{display:flex;gap:36px;}
+.nav-mid a{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .3s;}
+.nav-mid a:hover{color:var(--gold);}
+.nav-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.28);padding:7px 18px;display:flex;align-items:center;gap:8px;}
+.nav-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.gline{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 360px;border-bottom:1px solid var(--line);}
+.hero-l{padding:150px 80px 80px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--line);}
+.hero-r{padding:150px 44px 80px;background:var(--bg2);display:flex;flex-direction:column;justify-content:center;}
+
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:44px;display:flex;align-items:center;gap:14px;opacity:0;animation:fu .9s .3s forwards;}
+.hero-tag::before{content:'';width:36px;height:1px;background:var(--gold);}
+
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(58px,6vw,104px);line-height:.92;letter-spacing:-1.5px;margin-bottom:44px;}
+.hero h1 .ln{display:block;overflow:hidden;}
+.hero h1 .ln span{display:inline-block;transform:translateY(110%);animation:rise 1.2s cubic-bezier(.16,1,.3,1) forwards;}
+.hero h1 .ln:nth-child(1) span{animation-delay:.4s;}
+.hero h1 .ln:nth-child(2) span{animation-delay:.55s;}
+.hero h1 .ln:nth-child(3) span{animation-delay:.7s;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+
+@keyframes rise{to{transform:translateY(0);}}
+@keyframes fu{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+.hero-bio{font-family:'Cormorant Garamond',serif;font-size:clamp(17px,1.4vw,20px);line-height:1.7;color:var(--ink2);max-width:520px;margin-bottom:50px;opacity:0;animation:fu .9s 1s forwards;}
+.hero-bio strong{color:var(--ink);font-style:italic;font-weight:400;}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fu .9s 1.2s forwards;}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 28px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .35s;background:none;}
+.btn-gold{background:var(--gold);color:#070706;}
+.btn-gold:hover{background:var(--gold2);}
+.btn-ghost{border:1px solid var(--line);color:var(--ink3);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn svg{width:12px;height:12px;fill:currentColor;flex-shrink:0;}
+
+/* HERO RIGHT */
+.r-head{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ink3);padding-bottom:16px;border-bottom:1px solid var(--line);}
+.r-rows{margin-bottom:36px;}
+.rr{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line2);}
+.rr-k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);}
+.rr-v{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink);}
+.rr-v.g{color:var(--gold);}
+.r-nums{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);}
+.rn{background:var(--bg2);padding:20px 16px;}
+.rn-n{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;line-height:1;color:var(--ink);letter-spacing:-1px;}
+.rn-n span{color:var(--gold);font-size:.55em;}
+.rn-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-top:6px;line-height:1.5;}
+
+/* SECTIONS */
+.w{max-width:1280px;margin:0 auto;padding:0 80px;}
+section{padding:100px 0;}
+.ey{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.ey::before{content:'';width:22px;height:1px;background:var(--gold);}
+.sh{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(38px,4vw,68px);letter-spacing:-1px;line-height:1;margin-bottom:60px;}
+.sh em{font-style:italic;color:var(--gold);}
+
+/* EXPERTISE */
+.exp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+.ec{background:var(--bg);padding:42px 36px;position:relative;overflow:hidden;transition:background .4s;}
+.ec::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .5s;}
+.ec:hover{background:var(--bg3);}
+.ec:hover::after{transform:scaleX(1);}
+.ec-n{font-family:'Cormorant Garamond',serif;font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:16px;}
+.ec h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:11px;line-height:1.1;}
+.ec p{font-size:12px;color:var(--ink2);line-height:1.8;}
+
+/* LAUNCH CARD */
+.launch{border:1px solid var(--line);padding:52px 56px;margin-bottom:60px;position:relative;overflow:hidden;}
+.launch::before{content:'DEC 2025';position:absolute;right:40px;top:40px;font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:4px;color:var(--gold);opacity:.5;}
+.launch-ey{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.launch-h{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(28px,3vw,48px);letter-spacing:-1px;line-height:1.1;margin-bottom:18px;}
+.launch-h em{font-style:italic;color:var(--gold);}
+.launch-sub{font-size:13px;color:var(--ink2);line-height:1.8;max-width:620px;margin-bottom:28px;}
+.launch-url{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.3);padding-bottom:3px;transition:border-color .3s;}
+.launch-url:hover{border-color:var(--gold);}
+
+/* EXPERIENCE */
+.xp{display:grid;grid-template-columns:240px 1fr;gap:64px;padding:64px 0;border-top:1px solid var(--line2);position:relative;}
+.xp:last-child{border-bottom:1px solid var(--line2);}
+.xp::before{content:'';position:absolute;top:0;left:0;width:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transition:width .9s cubic-bezier(.16,1,.3,1);}
+.xp:hover::before{width:100%;}
+.xp-period{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+.xp-co{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin-bottom:4px;line-height:1.1;}
+.xp-role{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+.xp-loc{font-size:11px;color:var(--ink3);}
+.xp-quote{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--ink);line-height:1.6;margin-bottom:22px;padding-left:16px;border-left:1px solid var(--gold);}
+.xp-pts{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+.xp-pts li{font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.7;}
+.xp-pts li::before{content:'-';position:absolute;left:0;color:var(--gold);}
+.xp-pts li strong{color:var(--ink);font-weight:500;}
+.xp-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.xtag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 11px;border:1px solid var(--line);color:var(--ink3);}
+
+/* MARKETPLACES */
+.mp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);}
+.mp-region{background:var(--bg);padding:44px 40px;}
+.mp-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;display:flex;align-items:center;gap:10px;}
+.mp-label::before{content:'';width:14px;height:1px;background:var(--gold);}
+.mp-list{display:flex;flex-direction:column;}
+.mp-item{display:flex;justify-content:space-between;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line2);}
+.mp-item:last-child{border-bottom:none;}
+.mp-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);}
+.mp-tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.2);padding:3px 9px;}
+
+/* SKILLS */
+.sk-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+.sk-c{background:var(--bg);padding:38px 30px;}
+.sk-cl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line);}
+.sk-list{display:flex;flex-direction:column;gap:13px;}
+.sk-row{display:flex;flex-direction:column;gap:5px;}
+.sk-nm{font-size:12px;color:var(--ink2);display:flex;justify-content:space-between;}
+.sk-nm span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);}
+.sk-bar{height:1px;background:var(--line2);}
+.sk-fill{height:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+
+/* CONTACT */
+.ct-sec{background:var(--bg2);border-top:1px solid var(--line);}
+.ct-in{max-width:1280px;margin:0 auto;padding:100px 80px;}
+.ct-h{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(48px,5.5vw,92px);letter-spacing:-2px;line-height:.93;margin-bottom:64px;}
+.ct-h em{font-style:italic;color:var(--gold);}
+.ct-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-bottom:52px;}
+.ctc{background:var(--bg2);padding:32px 28px;transition:background .35s;}
+.ctc:hover{background:var(--bg3);}
+.ctc-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.ctc-v{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ink);text-decoration:none;display:block;word-break:break-all;transition:color .3s;}
+a.ctc-v:hover{color:var(--gold);}
+.ct-btns{display:flex;gap:12px;flex-wrap:wrap;}
+
+footer{border-top:1px solid var(--line);padding:26px 80px;display:flex;justify-content:space-between;align-items:center;}
+.ft-l{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:4px;text-transform:uppercase;color:var(--ink3);}
+.ft-r{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(30px);transition:opacity .95s cubic-bezier(.16,1,.3,1),transform .95s cubic-bezier(.16,1,.3,1);}
+.rev.in{opacity:1;transform:none;}
+.stg>*{opacity:0;transform:translateY(20px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+.stg.in>*:nth-child(1){opacity:1;transform:none;transition-delay:.04s;}
+.stg.in>*:nth-child(2){opacity:1;transform:none;transition-delay:.11s;}
+.stg.in>*:nth-child(3){opacity:1;transform:none;transition-delay:.18s;}
+.stg.in>*:nth-child(4){opacity:1;transform:none;transition-delay:.25s;}
+.stg.in>*:nth-child(5){opacity:1;transform:none;transition-delay:.32s;}
+.stg.in>*:nth-child(6){opacity:1;transform:none;transition-delay:.39s;}
+
+@media(max-width:1024px){
+  nav{padding:0 20px;}.nav-mid{display:none;}
+  .hero{grid-template-columns:1fr;}.hero-r{display:none;}
+  .hero-l{padding:110px 20px 60px;}
+  .w{padding:0 20px;}
+  .exp-g,.mp-wrap,.sk-g{grid-template-columns:1fr;}
+  .xp{grid-template-columns:1fr;gap:20px;}
+  .ct-g{grid-template-columns:1fr 1fr;}
+  .ct-in,.launch{padding:60px 20px;}
+  footer{padding:20px;flex-direction:column;gap:10px;text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="ring"></div>
+<div class="gline"></div>
+
+<nav>
+  <a class="nav-logo" href="#">Parvesh Bhatia</a>
+  <div class="nav-mid">
+    <a href="#expertise">Expertise</a>
+    <a href="#experience">Experience</a>
+    <a href="#marketplaces">Marketplaces</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-pill">Open to Opportunities</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="hero-tag">Brand Operations - GCC & India</div>
+    <h1>
+      <span class="ln"><span>One person.</span></span>
+      <span class="ln"><span>Complete brand</span></span>
+      <span class="ln"><span><em>ownership.</em></span></span>
+    </h1>
+    <p class="hero-bio">
+      Strategy. Content. Campaigns. Marketplaces. Shopify. Logistics. P&L. I handle it all — for <strong>luxury brands across UAE and India.</strong> One hire. Zero gaps.
+    </p>
+    <div class="hero-btns">
+      <a href="mailto:parveshbhatia912@gmail.com" class="btn btn-gold">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Hire Me
+      </a>
+      <a href="#experience" class="btn btn-ghost">View Work</a>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="r-head">At a Glance</div>
+    <div class="r-rows">
+      <div class="rr"><span class="rr-k">Based In</span><span class="rr-v">Gurgaon, India</span></div>
+      <div class="rr"><span class="rr-k">Dubai</span><span class="rr-v g">Regular Visits</span></div>
+      <div class="rr"><span class="rr-k">UAE Market</span><span class="rr-v g">3+ Years</span></div>
+      <div class="rr"><span class="rr-k">Relocation</span><span class="rr-v g">Open - UAE / GCC</span></div>
+      <div class="rr"><span class="rr-k">Experience</span><span class="rr-v">10+ Years</span></div>
+      <div class="rr"><span class="rr-k">Availability</span><span class="rr-v g">Immediate</span></div>
+    </div>
+    <div class="r-nums">
+      <div class="rn"><div class="rn-n">13<span>x</span></div><div class="rn-l">Revenue<br>Growth</div></div>
+      <div class="rn"><div class="rn-n">3<span>x</span></div><div class="rn-l">ROAS<br>Sustained</div></div>
+      <div class="rn"><div class="rn-n">30<span>k+</span></div><div class="rn-l">SKUs<br>Live</div></div>
+      <div class="rn"><div class="rn-n">10<span>+</span></div><div class="rn-l">Platforms<br>Managed</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="gline"></div>
+
+<div class="w">
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="ey rev">01 - Expertise</div>
+  <h2 class="sh rev">Not a specialist.<br><em>A complete operator.</em></h2>
+  <div class="exp-g stg">
+    <div class="ec">
+      <div class="ec-n">/ 01</div>
+      <h3>D2C & Shopify</h3>
+      <p>Theme editing, A/B testing, catalogue, pricing, CRO — built and run end-to-end. Every element of the storefront, owned.</p>
+    </div>
+    <div class="ec">
+      <div class="ec-n">/ 02</div>
+      <h3>Content Writing</h3>
+      <p>Technical and non-technical — PDP copy, brand storytelling, campaign messaging, SEO, email flows. Luxury tone across UAE and India.</p>
+    </div>
+    <div class="ec">
+      <div class="ec-n">/ 03</div>
+      <h3>Performance Marketing</h3>
+      <p>Meta campaigns built and run independently. UAE geo-targeted. Budget, creative, audience — all optimised to sustain 3x ROAS.</p>
+    </div>
+    <div class="ec">
+      <div class="ec-n">/ 04</div>
+      <h3>Marketplace Operations</h3>
+      <p>Every major luxury platform across UAE and India. Seller scoring, ranking, and visibility — understood from the inside out.</p>
+    </div>
+    <div class="ec">
+      <div class="ec-n">/ 05</div>
+      <h3>Analytics & Data</h3>
+      <p>GA4, Clarity, SQL, BigQuery. I pull my own data, find the drop-offs, and act — without waiting for a data team.</p>
+    </div>
+    <div class="ec">
+      <div class="ec-n">/ 06</div>
+      <h3>P&L & Logistics</h3>
+      <p>Full P&L ownership. Pricing, inventory, 3PL, returns — operations built to keep the brand running, not just selling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="padding-top:0;">
+  <div class="ey rev">02 - Experience</div>
+  <h2 class="sh rev">Built in<em> the field.</em></h2>
+
+  <!-- LAUNCH HIGHLIGHT -->
+  <div class="launch rev">
+    <div class="launch-ey">Brand Launch - December 2025</div>
+    <h2 class="launch-h">Genes Lecoanet Hemant<br><em>launched in UAE from zero.</em></h2>
+    <p class="launch-sub">Launched the brand in the UAE market in December 2025 — live on Namshi and D2C Shopify. Content, campaigns, catalogue, and operations. Built entirely from scratch.</p>
+    <a href="https://www.geneslecoanethemant.ae" target="_blank" class="launch-url">geneslecoanethemant.ae ↗</a>
+  </div>
+
+  <div class="xp rev">
+    <div>
+      <div class="xp-period">2023 - Present</div>
+      <div class="xp-co">Lecoanet Hemant</div>
+      <div class="xp-role">eCommerce & Brand Operations</div>
+      <div class="xp-loc">Gurgaon, India - UAE & India Markets</div>
+    </div>
+    <div>
+      <p class="xp-quote">"Full brand ownership — India and UAE — simultaneously."</p>
+      <ul class="xp-pts">
+        <li>Scaled India revenue <strong>13x in 24 months</strong> across D2C and marketplaces</li>
+        <li>Launched UAE on Namshi, Noon and Amazon UAE with MENA-localised content</li>
+        <li>Managed India luxury platforms: <strong>Nykaa Luxe, Tata CLiQ Luxe, Myntra Luxe</strong></li>
+        <li>Built and ran all Meta campaigns - UAE geo-targeted, <strong>3x ROAS sustained</strong></li>
+        <li>Wrote all content: PDP copy, brand voice, email flows, ad creative</li>
+        <li>Shopify theme editing, A/B testing, CRO via GA4 funnel analysis</li>
+        <li>Full <strong>P&L ownership</strong> - pricing, inventory, 3PL, returns</li>
+      </ul>
+      <div class="xp-tags">
+        <span class="xtag">Shopify</span><span class="xtag">Meta Ads</span><span class="xtag">Google Ads</span>
+        <span class="xtag">Noon</span><span class="xtag">Namshi</span><span class="xtag">Amazon UAE</span>
+        <span class="xtag">Nykaa Luxe</span><span class="xtag">Myntra Luxe</span><span class="xtag">Tata CLiQ Luxe</span>
+        <span class="xtag">Klaviyo</span><span class="xtag">GA4</span><span class="xtag">P&L</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="xp rev">
+    <div>
+      <div class="xp-period">2022 - 2023</div>
+      <div class="xp-co">Fabindia</div>
+      <div class="xp-role">Catalogue Manager</div>
+      <div class="xp-loc">India</div>
+    </div>
+    <div>
+      <p class="xp-quote">"30,000+ SKUs live at 91%+ approval — through content, systems, and speed."</p>
+      <ul class="xp-pts">
+        <li>Onboarded <strong>30,000+ SKUs</strong> across Amazon, Flipkart, Nykaa at <strong>91%+ approval rate</strong></li>
+        <li>Wrote all product content for mass catalogue onboarding</li>
+        <li>Built API automation cutting manual processing by <strong>~45%</strong></li>
+        <li>Developed QC frameworks and platform compliance playbooks</li>
+      </ul>
+      <div class="xp-tags">
+        <span class="xtag">Amazon</span><span class="xtag">Flipkart</span><span class="xtag">Nykaa</span>
+        <span class="xtag">Catalogue QC</span><span class="xtag">API Automation</span><span class="xtag">SQL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="xp rev">
+    <div>
+      <div class="xp-period">2019 - 2022</div>
+      <div class="xp-co">Noon</div>
+      <div class="xp-role">Catalogue & Category - Team Leader</div>
+      <div class="xp-loc">Gurgaon, India - UAE Market</div>
+    </div>
+    <div>
+      <p class="xp-quote">"QA to Team Leader in 6 months. Left knowing exactly how Noon works — from the inside."</p>
+      <ul class="xp-pts">
+        <li>Promoted <strong>QA to Team Leader in 6 months</strong></li>
+        <li>Drove <strong>80%+ sales uplift</strong> in electronics through content, pricing, and merchandising</li>
+        <li>Deep platform knowledge: seller scoring, listing ranking, category visibility</li>
+      </ul>
+      <div class="xp-tags">
+        <span class="xtag">Noon</span><span class="xtag">Category Management</span>
+        <span class="xtag">Merchandising</span><span class="xtag">Team Leadership</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETPLACES -->
+<section id="marketplaces" style="padding-top:0;">
+  <div class="ey rev">03 - Marketplace Coverage</div>
+  <h2 class="sh rev">Every major platform.<br><em>Both markets.</em></h2>
+  <div class="mp-wrap stg">
+    <div class="mp-region">
+      <div class="mp-label">UAE & GCC</div>
+      <div class="mp-list">
+        <div class="mp-item"><span class="mp-name">Noon</span><span class="mp-tag">Fashion - Electronics</span></div>
+        <div class="mp-item"><span class="mp-name">Namshi</span><span class="mp-tag">Luxury Fashion</span></div>
+        <div class="mp-item"><span class="mp-name">Amazon UAE</span><span class="mp-tag">Multi-category</span></div>
+        <div class="mp-item"><span class="mp-name">geneslecoanethemant.ae</span><span class="mp-tag">D2C - Built from zero</span></div>
+      </div>
+    </div>
+    <div class="mp-region">
+      <div class="mp-label">India</div>
+      <div class="mp-list">
+        <div class="mp-item"><span class="mp-name">Nykaa Luxe</span><span class="mp-tag">Luxury Fashion</span></div>
+        <div class="mp-item"><span class="mp-name">Tata CLiQ Luxe</span><span class="mp-tag">Luxury Fashion</span></div>
+        <div class="mp-item"><span class="mp-name">Myntra Luxe</span><span class="mp-tag">Luxury Fashion</span></div>
+        <div class="mp-item"><span class="mp-name">Amazon India</span><span class="mp-tag">Multi-category</span></div>
+        <div class="mp-item"><span class="mp-name">Flipkart</span><span class="mp-tag">Multi-category</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="padding-top:0;">
+  <div class="ey rev">04 - Skills & Tools</div>
+  <h2 class="sh rev">Full stack.<em> No gaps.</em></h2>
+  <div class="sk-g stg">
+    <div class="sk-c">
+      <div class="sk-cl">Platforms</div>
+      <div class="sk-list">
+        <div class="sk-row"><div class="sk-nm">Shopify <span>95%</span></div><div class="sk-bar"><div class="sk-fill" data-w="95"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Amazon Seller Central <span>90%</span></div><div class="sk-bar"><div class="sk-fill" data-w="90"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Noon / Namshi <span>93%</span></div><div class="sk-bar"><div class="sk-fill" data-w="93"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Nykaa / Myntra Luxe <span>88%</span></div><div class="sk-bar"><div class="sk-fill" data-w="88"></div></div></div>
+      </div>
+    </div>
+    <div class="sk-c">
+      <div class="sk-cl">Marketing & Content</div>
+      <div class="sk-list">
+        <div class="sk-row"><div class="sk-nm">Meta Ads <span>90%</span></div><div class="sk-bar"><div class="sk-fill" data-w="90"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Content Writing <span>92%</span></div><div class="sk-bar"><div class="sk-fill" data-w="92"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Klaviyo / Email CRM <span>82%</span></div><div class="sk-bar"><div class="sk-fill" data-w="82"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Google Ads / SEO <span>85%</span></div><div class="sk-bar"><div class="sk-fill" data-w="85"></div></div></div>
+      </div>
+    </div>
+    <div class="sk-c">
+      <div class="sk-cl">Analytics</div>
+      <div class="sk-list">
+        <div class="sk-row"><div class="sk-nm">GA4 / MS Clarity <span>86%</span></div><div class="sk-bar"><div class="sk-fill" data-w="86"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">SQL / BigQuery <span>78%</span></div><div class="sk-bar"><div class="sk-fill" data-w="78"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">A/B Testing / CRO <span>84%</span></div><div class="sk-bar"><div class="sk-fill" data-w="84"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">API Automation <span>76%</span></div><div class="sk-bar"><div class="sk-fill" data-w="76"></div></div></div>
+      </div>
+    </div>
+    <div class="sk-c">
+      <div class="sk-cl">Operations</div>
+      <div class="sk-list">
+        <div class="sk-row"><div class="sk-nm">P&L Management <span>90%</span></div><div class="sk-bar"><div class="sk-fill" data-w="90"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Catalogue QC <span>93%</span></div><div class="sk-bar"><div class="sk-fill" data-w="93"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">3PL / Logistics <span>82%</span></div><div class="sk-bar"><div class="sk-fill" data-w="82"></div></div></div>
+        <div class="sk-row"><div class="sk-nm">Team Leadership <span>85%</span></div><div class="sk-bar"><div class="sk-fill" data-w="85"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<div class="gline"></div>
+
+<!-- CONTACT -->
+<div class="ct-sec" id="contact">
+  <div class="ct-in">
+    <div class="ey rev">05 - Contact</div>
+    <h2 class="ct-h rev">Ready to own<br><em>your brand.</em></h2>
+    <div class="ct-g stg">
+      <div class="ctc">
+        <div class="ctc-l">Phone</div>
+        <a class="ctc-v" href="tel:+971521034574">+971 52 103 4574</a>
+      </div>
+      <div class="ctc">
+        <div class="ctc-l">Email</div>
+        <a class="ctc-v" href="mailto:parveshbhatia912@gmail.com">parveshbhatia912@gmail.com</a>
+      </div>
+      <div class="ctc">
+        <div class="ctc-l">LinkedIn</div>
+        <a class="ctc-v" href="https://linkedin.com/in/dreamballer" target="_blank">linkedin.com/in/dreamballer</a>
+      </div>
+      <div class="ctc">
+        <div class="ctc-l">Location</div>
+        <span class="ctc-v">Gurgaon, India<br><small style="font-size:12px;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">Dubai visits - Open to UAE relocation</small></span>
+      </div>
+    </div>
+    <div class="ct-btns rev">
+      <a href="mailto:parveshbhatia912@gmail.com" class="btn btn-gold">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Get In Touch
+      </a>
+      <a href="https://linkedin.com/in/dreamballer" target="_blank" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.5v-7H9v7zm-1.3-8a1.3 1.3 0 110-2.6 1.3 1.3 0 010 2.6zM18 17h-2.5v-3.5c0-1-.4-1.5-1.1-1.5s-1.4.5-1.4 1.5V17H10.5v-7H13v1a2.8 2.8 0 012.4-1.1c1.7 0 2.6 1.1 2.6 3.3V17z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-l">Parvesh Bhatia</div>
+  <div class="ft-r">eCommerce & Brand Operations - GCC & India - 2026</div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';},90);
+});
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:0.1});
+document.querySelectorAll('.rev,.stg').forEach(el=>io.observe(el));
+const skG=document.querySelector('.sk-g');
+if(skG){
+  const sio=new IntersectionObserver(e=>{
+    if(e[0].isIntersecting){document.querySelectorAll('.sk-fill').forEach(b=>b.style.width=b.dataset.w+'%');sio.disconnect();}
+  },{threshold:0.15});
+  sio.observe(skG);
+}
+const secs=['expertise','experience','marketplaces','skills','contact'].map(id=>document.getElementById(id)).filter(Boolean);
+const navAs=document.querySelectorAll('.nav-mid a');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY+window.innerHeight/3;
+  let ai=0;secs.forEach((s,i)=>{if(s.offsetTop<=y)ai=i;});
+  navAs.forEach((a,i)=>a.style.color=i===ai?'var(--gold)':'');
+},{passive:true});
+</script>
+</body>
+</html>
