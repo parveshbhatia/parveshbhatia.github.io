@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parvesh Bhatia — E-Commerce Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D10;
+    --bg-warm:#13161A;
+    --ink:#F4EEE3;
+    --ink-dim:#8E8579;
+    --accent:#E8593A;
+    --accent-soft:#F2A57B;
+    --gold:#D9B14E;
+    --line:rgba(244,238,227,0.10);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    overflow-x:hidden;
+    cursor:default;
+  }
+
+  /* grain texture overlay */
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events:none;
+    z-index:9999;
+    opacity:0.5;
+    mix-blend-mode:overlay;
+  }
+
+  /* TOP TICKER */
+  .ticker{
+    position:fixed; top:0; left:0; right:0;
+    background:var(--bg-warm);
+    border-bottom:1px solid var(--line);
+    padding:10px 0;
+    overflow:hidden;
+    z-index:100;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+  }
+  .ticker-track{
+    display:flex; gap:60px;
+    white-space:nowrap;
+    animation:tick 40s linear infinite;
+    will-change:transform;
+  }
+  .ticker span{ color:var(--ink-dim); }
+  .ticker span b{ color:var(--accent); margin-right:8px; }
+  @keyframes tick{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  /* SIDEBAR NAV */
+  nav.side{
+    position:fixed; left:36px; top:50%; transform:translateY(-50%);
+    z-index:50;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  nav.side a{
+    color:var(--ink-dim);
+    text-decoration:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    padding:6px 12px 6px 22px;
+    position:relative;
+    transition:color 0.3s,letter-spacing 0.3s;
+  }
+  nav.side a::before{
+    content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:14px; height:1px; background:var(--ink-dim);
+    transition:all 0.3s;
+  }
+  nav.side a:hover, nav.side a.active{
+    color:var(--ink);
+    letter-spacing:3px;
+  }
+  nav.side a:hover::before, nav.side a.active::before{
+    width:20px; background:var(--accent);
+  }
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    padding:120px 100px 80px 140px;
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative;
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:30px;
+    opacity:0;
+    animation:fadeUp 0.9s 0.2s forwards;
+  }
+  .hero h1{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-size:140px;
+    line-height:0.92;
+    letter-spacing:-4px;
+    color:var(--ink);
+    margin-bottom:40px;
+  }
+  .hero h1 .line{
+    display:block; overflow:hidden;
+  }
+  .hero h1 .line span{
+    display:inline-block;
+    transform:translateY(110%);
+    animation:rise 1s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  .hero h1 .line:nth-child(1) span{ animation-delay:0.35s; }
+  .hero h1 .line:nth-child(2) span{ animation-delay:0.5s; }
+  .hero h1 .last{ font-style:italic; font-weight:400; color:var(--accent); }
+  @keyframes rise{ to{ transform:translateY(0); } }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:translateY(0); } }
+
+  .hero-sub{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-size:24px;
+    color:var(--ink);
+    max-width:780px;
+    line-height:1.5;
+    margin-bottom:60px;
+    opacity:0;
+    animation:fadeUp 0.9s 0.85s forwards;
+  }
+
+  .hero-meta{
+    display:flex; gap:50px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--ink-dim);
+    opacity:0;
+    animation:fadeUp 0.9s 1.1s forwards;
+  }
+  .hero-meta div b{ display:block; color:var(--ink); font-size:14px; font-family:'Inter',sans-serif; font-weight:500; margin-top:4px; letter-spacing:0.5px; text-transform:none; }
+
+  .hero-scroll{
+    position:absolute; bottom:40px; left:140px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--ink-dim);
+    display:flex; align-items:center; gap:14px;
+    opacity:0;
+    animation:fadeUp 0.9s 1.4s forwards;
+  }
+  .hero-scroll::after{
+    content:''; width:60px; height:1px; background:var(--ink-dim);
+    animation:scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine{ 0%,100%{ transform:scaleX(1); } 50%{ transform:scaleX(0.5); transform-origin:left; } }
+
+  /* SECTION ARCHITECTURE */
+  section{ padding:140px 100px 140px 140px; position:relative; }
+  .section-head{ margin-bottom:80px; max-width:1100px; }
+  .section-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:24px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .section-num::before{
+    content:''; width:30px; height:1px; background:var(--accent);
+  }
+  .section-title{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-size:78px;
+    line-height:1;
+    letter-spacing:-2px;
+    color:var(--ink);
+  }
+  .section-title em{ font-style:italic; color:var(--accent); }
+
+  /* METRICS */
+  .metrics-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .metric{
+    background:var(--bg);
+    padding:60px 50px;
+    position:relative;
+    transition:background 0.4s;
+  }
+  .metric:hover{ background:var(--bg-warm); }
+  .metric-num{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:96px;
+    line-height:1;
+    letter-spacing:-3px;
+    color:var(--ink);
+  }
+  .metric-num .unit{
+    font-size:48px;
+    color:var(--accent);
+    font-weight:300;
+  }
+  .metric-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-top:28px;
+  }
+  .metric-desc{
+    font-family:'Fraunces',serif;
+    font-size:18px; line-height:1.45;
+    color:var(--ink);
+    margin-top:16px;
+    max-width:280px;
+  }
+
+  /* CAPABILITY */
+  .cap-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .cap{
+    background:var(--bg);
+    padding:50px 50px;
+    transition:background 0.4s;
+  }
+  .cap:hover{ background:var(--bg-warm); }
+  .cap-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; color:var(--accent); letter-spacing:1.5px;
+    margin-bottom:18px;
+  }
+  .cap h3{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:34px;
+    letter-spacing:-1px;
+    color:var(--ink);
+    margin-bottom:14px;
+  }
+  .cap p{ color:var(--ink-dim); font-size:16px; line-height:1.65; max-width:480px; }
+
+  /* CASE STUDIES */
+  .case{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:80px;
+    padding:80px 0;
+    border-top:1px solid var(--line);
+    align-items:start;
+  }
+  .case:last-child{ border-bottom:1px solid var(--line); }
+  .case-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:16px;
+  }
+  .case h3{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-size:48px;
+    letter-spacing:-1.5px;
+    line-height:1.05;
+    color:var(--ink);
+  }
+  .case-meta{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; color:var(--ink-dim); letter-spacing:1.5px;
+    margin-top:18px;
+  }
+  .case-body p{
+    font-family:'Fraunces',serif;
+    font-size:19px; line-height:1.55;
+    color:var(--ink);
+    margin-bottom:20px;
+  }
+  .case-body p strong{ color:var(--accent); font-weight:500; font-style:italic; }
+  .case-results{
+    display:flex; gap:60px; margin-top:34px;
+    padding-top:34px;
+    border-top:1px solid var(--line);
+  }
+  .case-results .r-num{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:54px;
+    line-height:1;
+    color:var(--accent);
+    letter-spacing:-2px;
+  }
+  .case-results .r-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px; color:var(--ink-dim);
+    letter-spacing:2px; text-transform:uppercase;
+    margin-top:10px;
+  }
+
+  /* CONTACT */
+  .contact-wrap{
+    border-top:1px solid var(--line);
+    padding:140px 100px 100px 140px;
+  }
+  .contact-head{
+    font-family:'Fraunces',serif;
+    font-weight:300;
+    font-size:120px;
+    line-height:0.95;
+    letter-spacing:-3px;
+    color:var(--ink);
+    margin-bottom:60px;
+  }
+  .contact-head em{ font-style:italic; color:var(--accent); }
+  .contact-grid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:60px;
+    max-width:900px;
+    margin-bottom:80px;
+  }
+  .c-row{ border-bottom:1px solid var(--line); padding-bottom:24px; }
+  .c-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+  }
+  .c-val{
+    font-family:'Fraunces',serif;
+    font-size:24px;
+    color:var(--ink);
+    text-decoration:none;
+    display:inline-block;
+    position:relative;
+  }
+  .c-val::after{
+    content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px;
+    background:var(--accent);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform 0.4s;
+  }
+  a.c-val:hover::after{ transform:scaleX(1); }
+
+  footer{
+    padding:40px 100px 40px 140px;
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-between;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+
+  /* REVEAL ANIMATION */
+  .reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:opacity 1s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.in{
+    opacity:1; transform:translateY(0);
+  }
+  .reveal-stagger > *{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal-stagger.in > *{ opacity:1; transform:translateY(0); }
+  .reveal-stagger.in > *:nth-child(1){ transition-delay:0.05s; }
+  .reveal-stagger.in > *:nth-child(2){ transition-delay:0.15s; }
+  .reveal-stagger.in > *:nth-child(3){ transition-delay:0.25s; }
+  .reveal-stagger.in > *:nth-child(4){ transition-delay:0.35s; }
+  .reveal-stagger.in > *:nth-child(5){ transition-delay:0.45s; }
+  .reveal-stagger.in > *:nth-child(6){ transition-delay:0.55s; }
+
+  /* RESPONSIVE */
+  @media (max-width:900px){
+    nav.side{ display:none; }
+    .ticker{ font-size:9px; }
+    .hero, section, .contact-wrap, footer{ padding-left:24px; padding-right:24px; }
+    .hero{ padding-top:80px; padding-bottom:60px; min-height:90vh; }
+    .hero h1{ font-size:64px; letter-spacing:-2px; }
+    .hero-sub{ font-size:18px; }
+    .hero-meta{ flex-wrap:wrap; gap:24px; }
+    .hero-scroll{ left:24px; }
+    section{ padding-top:80px; padding-bottom:80px; }
+    .section-title{ font-size:42px; letter-spacing:-1px; }
+    .metrics-grid, .cap-grid{ grid-template-columns:1fr; }
+    .metric, .cap{ padding:36px 28px; }
+    .metric-num{ font-size:64px; }
+    .case{ grid-template-columns:1fr; gap:24px; padding:50px 0; }
+    .case h3{ font-size:32px; }
+    .case-results{ flex-wrap:wrap; gap:30px; }
+    .case-results .r-num{ font-size:40px; }
+    .contact-head{ font-size:50px; letter-spacing:-1px; }
+    .contact-grid{ grid-template-columns:1fr; gap:32px; }
+    .c-val{ font-size:18px; word-break:break-all; }
+    footer{ flex-direction:column; gap:12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span><b>13x</b>revenue in 24 months</span>
+    <span><b>3x</b>ROAS sustained</span>
+    <span><b>30K+</b>SKUs onboarded</span>
+    <span><b>5</b>marketplaces, zero to launch</span>
+    <span><b>80%+</b>category uplift inside Noon</span>
+    <span><b>10+</b>years, UAE & India</span>
+    <!-- duplicate for seamless loop -->
+    <span><b>13x</b>revenue in 24 months</span>
+    <span><b>3x</b>ROAS sustained</span>
+    <span><b>30K+</b>SKUs onboarded</span>
+    <span><b>5</b>marketplaces, zero to launch</span>
+    <span><b>80%+</b>category uplift inside Noon</span>
+    <span><b>10+</b>years, UAE & India</span>
+  </div>
+</div>
+
+<!-- SIDE NAV -->
+<nav class="side">
+  <a href="#hero" class="active">Intro</a>
+  <a href="#numbers">Numbers</a>
+  <a href="#what">Capability</a>
+  <a href="#work">Work</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow">Parvesh Bhatia / E-Commerce Manager</div>
+  <h1>
+    <span class="line"><span>Built for </span></span>
+    <span class="line"><span>commerce that <em class="last">moves.</em></span></span>
+  </h1>
+  <p class="hero-sub">A decade running D2C, marketplaces, and digital retail across the UAE and India — for luxury and lifestyle brands that need their numbers to move and their stories to land.</p>
+  <div class="hero-meta">
+    <div>Based<b>Dubai, UAE</b></div>
+    <div>Markets<b>UAE · GCC · India</b></div>
+    <div>Tools<b>Shopify · GA4 · SQL</b></div>
+    <div>Years<b>10+</b></div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <div class="section-head reveal">
+    <div class="section-num">01 — Impact</div>
+    <h2 class="section-title">Numbers that <em>moved the business.</em></h2>
+  </div>
+  <div class="metrics-grid reveal-stagger">
+    <div class="metric">
+      <div class="metric-num" data-target="13" data-suffix="x"><span class="unit">x</span></div>
+      <div class="metric-label">Revenue Growth</div>
+      <div class="metric-desc">India e-commerce revenue scaled 13x in 24 months at a luxury French fashion brand.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num" data-target="3" data-suffix="x"><span class="unit">x</span></div>
+      <div class="metric-label">ROAS Sustained</div>
+      <div class="metric-desc">Across Meta and Google Ads, with disciplined CAC and audience-led optimisation.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num" data-target="30" data-suffix="k+"><span class="unit">k+</span></div>
+      <div class="metric-label">SKUs Onboarded</div>
+      <div class="metric-desc">Across Amazon, Flipkart and Nykaa at a 91%+ catalogue approval rate.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num" data-target="5"></div>
+      <div class="metric-label">Marketplaces Launched</div>
+      <div class="metric-desc">Noon, Namshi, Funkysouq, Amazon, Flipkart — built from zero in the UAE & India.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num" data-target="80" data-suffix="%+"><span class="unit">%+</span></div>
+      <div class="metric-label">Category Uplift</div>
+      <div class="metric-desc">Sales uplift in key electronics categories during three years inside Noon.</div>
+    </div>
+    <div class="metric">
+      <div class="metric-num" data-target="45" data-prefix="~" data-suffix="%"><span class="unit">%</span></div>
+      <div class="metric-label">Faster Operations</div>
+      <div class="metric-desc">Manual catalogue processing cut via API-based automation workflows.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I DO -->
+<section id="what">
+  <div class="section-head reveal">
+    <div class="section-num">02 — Capability</div>
+    <h2 class="section-title">End-to-end <em>e-commerce ownership.</em></h2>
+  </div>
+  <div class="cap-grid reveal-stagger">
+    <div class="cap">
+      <div class="cap-num">/ 01</div>
+      <h3>Platform & D2C</h3>
+      <p>Shopify storefronts built and run end-to-end. Catalogue, pricing, payments, CRO, customer journey — the whole stack.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">/ 02</div>
+      <h3>Marketplaces</h3>
+      <p>Amazon, Noon, Namshi, Funkysouq, Flipkart, Nykaa. Onboarding, trading, partnerships, growth.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">/ 03</div>
+      <h3>Performance Marketing</h3>
+      <p>Meta and Google Ads, SEO, SEM, email and CRM — every campaign aligned to revenue, not vanity. 3x ROAS sustained.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">/ 04</div>
+      <h3>Data & Analytics</h3>
+      <p>GA4, Microsoft Clarity, SQL, BigQuery. Pull funnel data myself, find the gaps, translate into commercial action.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">/ 05</div>
+      <h3>Conversion & UX</h3>
+      <p>CR, AOV and bounce — moved through PDP optimisation, A/B testing and friction reduction at every step.</p>
+    </div>
+    <div class="cap">
+      <div class="cap-num">/ 06</div>
+      <h3>Cross-Functional</h3>
+      <p>Marketing, tech, supply chain, operations — aligned so launches actually land instead of slipping.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-head reveal">
+    <div class="section-num">03 — Selected Work</div>
+    <h2 class="section-title">A few stories, <em>told straight.</em></h2>
+  </div>
+
+  <div class="case reveal">
+    <div>
+      <div class="case-label">Case 01 / 2023 — Present</div>
+      <h3>Lecoanet Hemant</h3>
+      <div class="case-meta">Luxury French Fashion · Dubai &amp; Gurgaon</div>
+    </div>
+    <div class="case-body">
+      <p>Built the UAE Shopify D2C from zero — platform, catalogue, pricing, customer journey — then expanded onto Noon, Namshi, Funkysouq, Amazon and Flipkart with <strong>localised MENA content and campaigns</strong>.</p>
+      <p>Ran the marketing stack across Meta, Google and email; tracked CR, AOV and bounce in GA4; optimised through A/B testing and PDP work. Revenue moved fast.</p>
+      <div class="case-results">
+        <div>
+          <div class="r-num">13<span style="font-size:0.55em;">x</span></div>
+          <div class="r-label">Revenue Growth / 24 mo</div>
+        </div>
+        <div>
+          <div class="r-num">3<span style="font-size:0.55em;">x</span></div>
+          <div class="r-label">ROAS Sustained</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case reveal">
+    <div>
+      <div class="case-label">Case 02 / 2022 — 2023</div>
+      <h3>Fabindia</h3>
+      <div class="case-meta">Catalogue Manager · India</div>
+    </div>
+    <div class="case-body">
+      <p>Took 30,000+ SKUs live across Amazon, Flipkart and Nykaa at a <strong>91%+ approval rate</strong> — by building QC frameworks, attribute mapping, and platform compliance into a repeatable pipeline.</p>
+      <p>Layered in API automation that cut manual catalogue processing by an estimated 40–50%, so the next launch was always faster than the last.</p>
+      <div class="case-results">
+        <div>
+          <div class="r-num">30<span style="font-size:0.55em;">k+</span></div>
+          <div class="r-label">SKUs Onboarded</div>
+        </div>
+        <div>
+          <div class="r-num">91<span style="font-size:0.55em;">%+</span></div>
+          <div class="r-label">Approval Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case reveal">
+    <div>
+      <div class="case-label">Case 03 / 2019 — 2022</div>
+      <h3>Noon, From the Inside</h3>
+      <div class="case-meta">Catalogue &amp; Category · Dubai &amp; Gurgaon</div>
+    </div>
+    <div class="case-body">
+      <p>Joined as a QA. Promoted to <strong>Team Leader within six months</strong>. Spent three years inside the Catalogue and Category function, learning how marketplaces actually score sellers, rank listings, and award visibility.</p>
+      <p>Drove 80%+ sales uplift in key electronics categories through content, pricing strategy, and merchandising — and built the platform-side instinct that still informs every marketplace decision I make today.</p>
+      <div class="case-results">
+        <div>
+          <div class="r-num">80<span style="font-size:0.55em;">%+</span></div>
+          <div class="r-label">Category Uplift</div>
+        </div>
+        <div>
+          <div class="r-num">6<span style="font-size:0.55em;">mo</span></div>
+          <div class="r-label">QA → Team Lead</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-wrap" id="contact">
+  <div class="section-num reveal">04 — Let's Talk</div>
+  <h2 class="contact-head reveal">Let's build <em>what's next.</em></h2>
+  <div class="contact-grid reveal-stagger">
+    <div class="c-row">
+      <div class="c-label">Phone</div>
+      <a class="c-val" href="tel:+971521034574">+971 52 103 4574</a>
+    </div>
+    <div class="c-row">
+      <div class="c-label">Email</div>
+      <a class="c-val" href="mailto:parveshbhatia912@gmail.com">parveshbhatia912@gmail.com</a>
+    </div>
+    <div class="c-row">
+      <div class="c-label">LinkedIn</div>
+      <a class="c-val" href="https://parveshbhatia.portfolio" target="_blank">parveshbhatia.portfolio</a>
+    </div>
+    <div class="c-row">
+      <div class="c-label">Based</div>
+      <span class="c-val">Dubai, UAE</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Parvesh Bhatia / 2026</span>
+  <span>E-Commerce / D2C / Marketplaces</span>
+</footer>
+
+<script>
+  // Intersection observer for reveals
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        // animate metrics when numbers section reveals
+        if (e.target.classList.contains('metrics-grid')){
+          animateMetrics();
+          io.unobserve(e.target);
+        }
+      }
+    });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+  // Metric counter animation
+  function animateMetrics(){
+    document.querySelectorAll('.metric-num').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const duration = 1400;
+      const start = performance.now();
+      function step(t){
+        const p = Math.min(1, (t - start) / duration);
+        // easeOutCubic
+        const eased = 1 - Math.pow(1 - p, 3);
+        cur = Math.round(target * eased);
+        el.innerHTML = prefix + cur + (suffix ? `<span class="unit">${suffix}</span>` : '');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // Sidebar active link on scroll
+  const navLinks = document.querySelectorAll('nav.side a');
+  const sections = ['hero','numbers','what','work','contact'].map(id => document.getElementById(id));
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + window.innerHeight / 3;
+    let activeIdx = 0;
+    sections.forEach((s, i) => {
+      if (s && s.offsetTop <= y) activeIdx = i;
+    });
+    navLinks.forEach((a, i) => a.classList.toggle('active', i === activeIdx));
+  }, { passive:true });
+</script>
+
+</body>
+</html>
